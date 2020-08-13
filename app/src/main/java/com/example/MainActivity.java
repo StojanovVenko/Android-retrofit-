@@ -1,9 +1,11 @@
 package com.example;
 
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.asynctask.MyReceiptsAsyncTask;
 import com.example.client.JsonPlaceholderClient;
 import com.example.client.MyReceiptsClient;
 import com.example.retrofit.R;
@@ -18,6 +20,7 @@ import com.example.model.Post;
 public class MainActivity extends AppCompatActivity {
     TextView textResult;
     TextView textFirma;
+    ProgressBar progressBar;
 
     JsonPlaceholderService jsonPlaceholderApiService;
     MyReceiptsService myReceiptsService;
@@ -31,13 +34,19 @@ public class MainActivity extends AppCompatActivity {
         initVariables();
 
         testJsonPlaceholderApi();
-        testMyReceiptsApi();
+//        testMyReceiptsApi();
+        testMyReceiptsApiWithAsyncTask();
+    }
 
+    private void testMyReceiptsApiWithAsyncTask() {
+        MyReceiptsAsyncTask asyncTask = new MyReceiptsAsyncTask(textFirma, progressBar);
+        asyncTask.execute(1);
     }
 
     private void initVariables() {
         textResult = (TextView) findViewById(R.id.txtResult);
         textFirma = (TextView) findViewById(R.id.txtFirma);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         jsonPlaceholderApiService = JsonPlaceholderClient.getService();
         myReceiptsService = MyReceiptsClient.getService();

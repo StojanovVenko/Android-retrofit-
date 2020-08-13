@@ -18,11 +18,20 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="96dp"
             android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
     <TextView
-            android:text="Ok"
             android:layout_width="0dp"
             android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:id="@+id/txtFirma"
             app:layout_constraintTop_toBottomOf="@+id/txtResult" android:layout_marginTop="50dp"
             android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/progressBar"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:progressTint="#03A9F4" android:indeterminate="true"
+            android:indeterminateTint="#03A9F4"
+            app:layout_constraintTop_toTopOf="parent" android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
