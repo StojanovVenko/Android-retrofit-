@@ -1,26 +1,27 @@
-package com.example.retrofit;
+package com.example;
 
 import android.util.Log;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.example.retrofit.myreceiptsApi.Firma;
-import com.example.retrofit.myreceiptsApi.MyReceiptsApi;
-import org.w3c.dom.Text;
+import com.example.client.JsonPlaceholderClient;
+import com.example.client.MyReceiptsClient;
+import com.example.retrofit.R;
+import com.example.model.Firma;
+import com.example.service.MyReceiptsService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.retrofit.jsonPlacheholderApi.MyApiService;
-import com.example.retrofit.jsonPlacheholderApi.Post;
+import com.example.service.JsonPlaceholderService;
+import com.example.model.Post;
 
 public class MainActivity extends AppCompatActivity {
     TextView textResult;
     TextView textFirma;
 
-    MyApiService jsonPlaceholderApiService;
-    MyReceiptsApi myReceiptsService;
+    JsonPlaceholderService jsonPlaceholderApiService;
+    MyReceiptsService myReceiptsService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,24 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
         initVariables();
 
-        retrofitJsonPlacheholderApi();
-        retrofitMyReceiptsApi();
+        testJsonPlaceholderApi();
+        testMyReceiptsApi();
 
     }
 
     private void initVariables() {
         textResult = (TextView) findViewById(R.id.txtResult);
         textFirma = (TextView) findViewById(R.id.txtFirma);
+
+        jsonPlaceholderApiService = JsonPlaceholderClient.getService();
+        myReceiptsService = MyReceiptsClient.getService();
     }
 
-    private void retrofitJsonPlacheholderApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        jsonPlaceholderApiService = retrofit.create(MyApiService.class);
-
+    private void testJsonPlaceholderApi() {
         Call<Post> call = jsonPlaceholderApiService.getPost(1);
 
         call.enqueue(new Callback<Post>() {
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     textResult.setText("Code: " + response.code());
                     return;
                 }
-
                 Post post = response.body();
                 textResult.setText(post.getTitle());
             }
@@ -70,24 +66,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void retrofitMyReceiptsApi() {
-        Retrofit mrRetrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.15:8080/api/test/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private void testMyReceiptsApi() {
+        Call<Firma> call = myReceiptsService.getFirma(1);
 
-        myReceiptsService = mrRetrofit.create(MyReceiptsApi.class);
-
-        Call<Firma> callFirma = myReceiptsService.getFirma(1);
-
-        callFirma.enqueue(new Callback<Firma>() {
+        call.enqueue(new Callback<Firma>() {
             @Override
             public void onResponse(Call<Firma> call, Response<Firma> response) {
                 if(!response.isSuccessful()) {
                     textFirma.setText("Code: " + response.code());
                     return;
                 }
-
                 Firma f = response.body();
                 textFirma.setText(f.getIme() + " - " + f.getAdresa());
             }

@@ -1,4 +1,4 @@
-package com.example.retrofit.myreceiptsApi;
+package com.example.model;
 
 import java.util.List;
 

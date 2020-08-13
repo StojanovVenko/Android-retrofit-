@@ -1,4 +1,4 @@
-package com.example.retrofit.jsonPlacheholderApi;
+package com.example.model;
 
 import com.google.gson.annotations.SerializedName;
 
